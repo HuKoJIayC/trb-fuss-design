@@ -1,0 +1,16 @@
+{
+  "name": "Fuss — задачи",
+  "short_name": "Fuss",
+  "description": "Рабочее пространство для задач и командных зависимостей",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071321",
+  "theme_color": "#071321",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./technology-logo-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

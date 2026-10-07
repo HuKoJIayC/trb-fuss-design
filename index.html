@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071321">
+  <meta name="description" content="Fuss — рабочее пространство для задач и командных зависимостей.">
+  <script>try{const preference=localStorage.getItem('fuss-theme')||'system';const theme=preference==='dark'||(preference==='system'&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.dataset.theme=theme;document.querySelector('meta[name="theme-color"]').content=theme==='light'?'#f2f6fb':'#071321'}catch{}</script>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./technology-logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Задачи · ТРБ надёжность</title>
+</head>
+<body data-view="tasks">
+  <div class="app-shell">
+    <main class="workspace" id="main-content">
+      <header class="topbar">
+        <div class="topbar-brand"><img class="topbar-logo" src="./technology-logo-mark.svg" alt="">ТРБ <strong>надёжность</strong></div>
+        <nav class="top-tabs" aria-label="Разделы приложения">
+          <button class="top-tab" type="button" data-section="dashboard">Дашборд</button>
+          <button class="top-tab is-current" type="button" data-section="tasks" aria-current="page">Задачи</button>
+          <button class="top-tab" type="button" data-section="infrastructure">Инфраструктура</button>
+          <button class="top-tab" type="button" data-section="reliability">Надёжность</button>
+        </nav>
+        <div class="topbar-right">
+          <span class="today-label" id="today-label"></span>
+          <button class="topbar-action notifications-action" type="button" aria-label="Уведомления: 3 новых" title="Уведомления" popovertarget="notifications-popover"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-2.5 7.5-2.5 9h17C20.5 15.5 18 15 18 8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="notification-count">3</span></button>
+          <button class="topbar-action" type="button" aria-label="Настройки" title="Настройки"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10.3 2.3h3.4l.5 2.2c.54.16 1.05.37 1.53.64l1.93-1.2 2.4 2.4-1.2 1.93c.27.48.48.99.64 1.53l2.2.5v3.4l-2.2.5c-.16.54-.37 1.05-.64 1.53l1.2 1.93-2.4 2.4-1.93-1.2c-.48.27-.99.48-1.53.64l-.5 2.2h-3.4l-.5-2.2c-.54-.16-1.05-.37-1.53-.64l-1.93 1.2-2.4-2.4 1.2-1.93c-.27-.48-.48-.99-.64-1.53l-2.2-.5v-3.4l2.2-.5c.16-.54.37-1.05.64-1.53l-1.2-1.93 2.4-2.4 1.93 1.2c.48-.27.99-.48 1.53-.64z" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.1" stroke="currentColor" stroke-width="1.55"/></svg></button>
+          <button class="topbar-action logout-action" type="button" aria-label="Выход" title="Выход"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5M14 16l4-4-4-4M8 12h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </header>
+
+      <aside class="filter-panel" aria-labelledby="filter-title">
+        <div class="filter-panel-heading"><span class="filter-panel-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16l-6.5 7v5.2l-3 1.8v-7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><span class="eyebrow">НАСТРОЙКА ВИДА</span><h2 id="filter-title">Фильтры</h2></div></div>
+        <p class="filter-panel-description">Выберите нужные параметры, чтобы сузить список задач.</p>
+        <div class="filter-quick-label" id="filter-quick-label">Быстрый выбор</div>
+        <div class="filter-row" id="filter-row" role="group" aria-label="Фильтр задач">
+          <button type="button" class="filter is-selected" data-filter="all">Все задачи</button>
+          <button type="button" class="filter" data-filter="urgent"><span class="filter-dot red"></span>Срочные</button>
+          <button type="button" class="filter" data-filter="personal"><span class="filter-dot teal"></span>Личные</button>
+          <button type="button" class="filter" data-filter="team"><span class="filter-dot violet"></span>Командные</button>
+        </div>
+        <div class="filter-fields">
+          <label class="filter-field">Лидер АС<select id="leader-filter"><option value="">Все лидеры</option></select></label>
+          <label class="filter-field">ИТ-услуга<select id="service-filter"><option value="">Все услуги</option></select></label>
+          <label class="filter-field">Статус<select id="status-filter"><option value="">Все статусы</option></select></label>
+          <label class="filter-field">Тип задачи<select id="type-filter"><option value="">Все типы</option></select></label>
+          <label class="filter-field">ОКР<select id="okr-filter"><option value="">Все ОКР</option></select></label>
+        </div>
+        <button class="reset-filters" id="reset-filters" type="button">Сбросить фильтры <span>↺</span></button>
+      </aside>
+
+      <section class="content" id="tasks-view">
+        <div class="overview" aria-label="Сводка по задачам">
+          <div class="overview-item"><span class="overview-label">В работе</span><strong id="stat-active">0</strong><span class="overview-caption">активных задач</span></div>
+          <div class="overview-item"><span class="overview-label">Требуют внимания</span><strong id="stat-urgent">0</strong><span class="overview-caption">срок до 7 дней</span></div>
+          <div class="overview-item"><span class="overview-label">Зависят от команд</span><strong id="stat-team">0</strong><span class="overview-caption">со связанными задачами</span></div>
+          <div class="overview-note"><span class="overview-note-icon">↗</span><span>Сначала — задачи с близким контрольным сроком. Затем — по этапам работы.</span></div>
+        </div>
+
+        <div class="list-toolbar">
+          <div class="tabs" role="tablist" aria-label="Списки задач">
+            <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="active">Активные <span id="active-count">0</span></button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="archive">Архив <span id="archive-count">0</span></button>
+          </div>
+          <label class="search"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.1 4.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><input id="search-input" type="search" placeholder="Поиск по задачам" aria-label="Поиск по задачам"><kbd>⌘ K</kbd></label>
+        </div>
+
+        <div class="list-meta"><div><span class="section-marker"></span><span id="list-heading">Текущие задачи</span><span class="list-count" id="visible-count">0</span></div><span id="sort-caption">По приоритету</span></div>
+        <div class="task-list" id="task-list" aria-live="polite"></div>
+      </section>
+      <section class="content section-placeholder" id="section-placeholder" hidden>
+        <span class="eyebrow"><span class="eyebrow-line"></span> ТРБ НАДЁЖНОСТЬ</span>
+        <h1 id="section-title"></h1>
+        <div class="placeholder-card"><span class="placeholder-symbol">↗</span><p id="section-description"></p></div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="notifications-popover" id="notifications-popover" popover>
+    <div class="popover-heading"><strong>Уведомления</strong><span>3 новых</span></div>
+    <div class="notification-item"><span class="notification-item-dot"></span><div><strong>Контрольный срок близко</strong><p>SMEO-2481 · до срока осталось 3 дня</p></div></div>
+    <div class="notification-item"><span class="notification-item-dot"></span><div><strong>Обновлён статус связи</strong><p>THETA-302 · In Review</p></div></div>
+    <div class="notification-item"><span class="notification-item-dot"></span><div><strong>Требуется уточнение</strong><p>SMEO-2457 · проверьте описание</p></div></div>
+    <p class="notifications-empty" hidden>Уведомления отключены в настройках.</p>
+  </div>
+
+  <dialog class="task-dialog" id="task-dialog" aria-labelledby="dialog-title"><button class="dialog-close" type="button" id="dialog-close" aria-label="Закрыть">×</button><div id="dialog-content"></div></dialog>
+  <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+    <button class="dialog-close" type="button" id="settings-close" aria-label="Закрыть настройки">×</button>
+    <span class="dialog-kicker">ПРЕДПОЧТЕНИЯ</span>
+    <h2 id="settings-title">Настройки</h2>
+    <p class="settings-intro">Настройте уведомления и внешний вид приложения.</p>
+    <div class="settings-section">
+      <div class="settings-section-title">Уведомления</div>
+      <label class="notification-setting"><span><strong>Показывать уведомления</strong><small>Новые события и счётчик в верхней панели</small></span><input id="notifications-enabled" type="checkbox" checked><span class="toggle-track" aria-hidden="true"></span></label>
+    </div>
+    <fieldset class="settings-section theme-fieldset">
+      <legend class="settings-section-title">Тема оформления</legend>
+      <div class="theme-options">
+        <label class="theme-option"><input type="radio" name="theme" value="system" checked><span>Системная</span><small>Как на устройстве</small></label>
+        <label class="theme-option"><input type="radio" name="theme" value="light"><span>Светлая</span><small>Светлый фон</small></label>
+        <label class="theme-option"><input type="radio" name="theme" value="dark"><span>Тёмная</span><small>Тёмный фон</small></label>
+      </div>
+    </fieldset>
+  </dialog>
+  <script src="./app.js" defer></script>
+</body>
+</html>
